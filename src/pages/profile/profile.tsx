@@ -1,19 +1,21 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from '../../services/store';
+import { getUserSelector, updateUser } from '../../services/slices/userSlice';
 
+// Component for user profile
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
+  const user = useSelector(getUserSelector);
+  const dispatch = useDispatch();
 
+  // State to manage form input values
   const [formValue, setFormValue] = useState({
     name: user.name,
     email: user.email,
     password: ''
   });
 
+  // Update form values when user data changes
   useEffect(() => {
     setFormValue((prevState) => ({
       ...prevState,
@@ -22,15 +24,19 @@ export const Profile: FC = () => {
     }));
   }, [user]);
 
+  // Check if form values have changed
   const isFormChanged =
     formValue.name !== user?.name ||
     formValue.email !== user?.email ||
     !!formValue.password;
 
+  // Form submission handler
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    dispatch(updateUser(formValue));
   };
 
+  // Cancel button handler to reset form values
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     setFormValue({
@@ -40,6 +46,7 @@ export const Profile: FC = () => {
     });
   };
 
+  // Handle input change in form fields
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValue((prevState) => ({
       ...prevState,
@@ -48,6 +55,7 @@ export const Profile: FC = () => {
   };
 
   return (
+    // Render user profile UI component with form values and handlers
     <ProfileUI
       formValue={formValue}
       isFormChanged={isFormChanged}
@@ -56,6 +64,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-
-  return null;
 };
