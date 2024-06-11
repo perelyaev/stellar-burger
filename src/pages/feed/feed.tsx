@@ -1,15 +1,25 @@
+import React, { FC, useEffect } from 'react';
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
-import { FC } from 'react';
+import { useDispatch, useSelector } from '../../services/store';
+import { getFeeds, getFeedOrder } from '../../services/slices/feedSlice';
 
+// Component for displaying feed of orders
 export const Feed: FC = () => {
-  /** TODO: взять переменную из стора */
-  const orders: TOrder[] = [];
+  const dispatch = useDispatch();
+  const orders: TOrder[] = useSelector(getFeedOrder);
 
+  // Fetch feed of orders on component mount
+  useEffect(() => {
+    dispatch(getFeeds());
+  }, []);
+
+  // Render preloader if orders are not yet loaded
   if (!orders.length) {
     return <Preloader />;
   }
 
-  <FeedUI orders={orders} handleGetFeeds={() => {}} />;
+  // Render feed UI with orders and handler to fetch more feeds
+  return <FeedUI orders={orders} handleGetFeeds={() => dispatch(getFeeds())} />;
 };
