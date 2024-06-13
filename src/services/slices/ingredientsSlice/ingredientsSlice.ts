@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getIngredientsApi } from '@api';
+import { getIngredientsApi } from '../../../utils/burger-api';
 import { TIngredient } from '@utils-types';
 
 // Define the shape of the ingredients state
@@ -12,7 +12,7 @@ type TIngredientsState = {
 };
 
 // Initial state of the ingredients slice
-const initialState: TIngredientsState = {
+export const initialState: TIngredientsState = {
   ingredients: [],
   buns: [],
   mains: [],
@@ -41,17 +41,25 @@ export const ingredientSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchIngredients.pending, (state) => {
+        state.ingredients = initialState.ingredients;
+        state.buns = initialState.buns;
+        state.mains = initialState.mains;
+        state.sauces = initialState.sauces;
         state.isLoading = true;
       })
       .addCase(fetchIngredients.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.ingredients = action.payload;
         state.buns = action.payload.filter((item) => item.type === 'bun');
         state.mains = action.payload.filter((item) => item.type === 'main');
         state.sauces = action.payload.filter((item) => item.type === 'sauce');
+        state.isLoading = false;
       })
       .addCase(fetchIngredients.rejected, (state) => {
-        state.isLoading = false;
+        state.ingredients = initialState.ingredients;
+        state.buns = initialState.buns;
+        state.mains = initialState.mains;
+        state.sauces = initialState.sauces;
+        state.isLoading = initialState.isLoading;
       });
   }
 });

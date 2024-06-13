@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
-import { orderBurgerApi } from '@api';
+import { orderBurgerApi } from '../../../utils/burger-api';
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
-import { RootState } from '../store';
+import { RootState } from '../../store';
 
 // Define the shape of the constructor state
 export type TConstructorState = {
@@ -13,7 +13,7 @@ export type TConstructorState = {
   };
   orderRequest: boolean;
   orderModalData: TOrder | null;
-  error: string | null; // Error message, if any
+  error: string | undefined; // Error message, if any
 };
 
 // Initial state of the constructor slice
@@ -25,7 +25,7 @@ export const initialState: TConstructorState = {
   },
   orderRequest: false,
   orderModalData: null,
-  error: null
+  error: undefined
 };
 
 // Async thunk to order a burger
@@ -109,25 +109,24 @@ export const constructorSlice = createSlice({
     builder
       .addCase(orderBurger.pending, (state) => {
         state.loading = true;
+        state.constructorItems = initialState.constructorItems;
         state.orderRequest = true;
-        state.error = null;
-      })
-      .addCase(orderBurger.rejected, (state, action) => {
-        state.loading = false;
-        state.orderRequest = false;
-        state.error = action.error.message
-          ? action.error.message
-          : 'Неизвестная ошибка';
+        state.orderModalData = initialState.orderModalData;
+        state.error = initialState.error;
       })
       .addCase(orderBurger.fulfilled, (state, action) => {
         state.loading = false;
+        state.constructorItems = initialState.constructorItems;
         state.orderRequest = false;
-        state.error = null;
         state.orderModalData = action.payload.order;
-        state.constructorItems = {
-          bun: null,
-          ingredients: []
-        };
+        state.error = initialState.error;
+      })
+      .addCase(orderBurger.rejected, (state, action) => {
+        state.loading = initialState.loading;
+        state.constructorItems = initialState.constructorItems;
+        state.orderRequest = initialState.orderRequest;
+        state.orderModalData = initialState.orderModalData;
+        state.error = action.error.message;
       });
   }
 });
