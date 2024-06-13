@@ -15,8 +15,8 @@ import '../../index.css';
 import styles from './app.module.css';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { useDispatch } from '../../services/store';
-import { fetchIngredients } from '../../services/slices/ingredientsSlice';
-import { getUser } from '../../services/slices/userSlice';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice/ingredientsSlice';
+import { getUser } from '../../services/slices/userSlice/userSlice';
 import { ProtectedRoute } from '../protected-route';
 
 const App = () => {

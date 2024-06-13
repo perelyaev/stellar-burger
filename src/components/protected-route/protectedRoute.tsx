@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from '../../services/store';
-import { getIsAuthCheckedSelector } from '../../services/slices/userSlice';
+import { getIsAuthCheckedSelector } from '../../services/slices/userSlice/userSlice';
 import { Preloader } from '../ui/preloader';
 
 type TProtectedRouteProps = {

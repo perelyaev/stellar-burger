@@ -2,7 +2,7 @@ import { ProfileOrdersUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
-import { getOrder } from '../../services/slices/userOrderSlice';
+import { getOrder } from '../../services/slices/userOrderSlice/userOrderSlice';
 
 // Component to display user profile orders
 export const ProfileOrders: FC = () => {

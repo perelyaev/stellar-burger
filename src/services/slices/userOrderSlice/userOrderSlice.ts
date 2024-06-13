@@ -1,4 +1,4 @@
-import { getOrdersApi } from '@api';
+import { getOrdersApi } from '../../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
@@ -14,7 +14,7 @@ type TUserState = {
 };
 
 // Define initial state
-const initialState: TUserState = {
+export const initialState: TUserState = {
   orders: [] // Renamed field to "orders"
 };
 
@@ -25,7 +25,7 @@ export const userOrderSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getOrder.fulfilled, (state, action) => {
-      state.orders = action.payload; // Fixed typo in action
+      state.orders = action.payload;
     });
   }
 });

@@ -3,7 +3,10 @@ import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
-import { getFeeds, getFeedOrder } from '../../services/slices/feedSlice';
+import {
+  getFeeds,
+  getFeedOrder
+} from '../../services/slices/feedSlice/feedSlice';
 
 // Component for displaying feed of orders
 export const Feed: FC = () => {

@@ -5,15 +5,15 @@ import { useDispatch, useSelector } from '../../services/store';
 import {
   clearAll,
   getConstructorSelector
-} from '../../services/slices/constructorSlice';
-import { getIsAuthCheckedSelector } from '../../services/slices/userSlice';
+} from '../../services/slices/constructorSlice/constructorSlice';
+import { getIsAuthCheckedSelector } from '../../services/slices/userSlice/userSlice';
 
 import { useNavigate } from 'react-router-dom';
 import {
   clearOrder,
   getOrderState,
   postOrder
-} from '../../services/slices/orderSlice';
+} from '../../services/slices/orderSlice/orderSlice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();

@@ -1,21 +1,22 @@
-import { orderBurgerApi } from '@api';
+import { orderBurgerApi } from '../../../utils/burger-api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
-import { RootState } from '../store';
+import { RootState } from '../../store';
 
 // Define the shape of the order state
 type TOrderState = {
   orders: TOrder | null;
   request: boolean;
   name: string;
-  error?: string | null; // Error message, if any
+  error?: string | undefined; // Error message, if any
 };
 
 // Initial state of the order slice
 export const initialState: TOrderState = {
   orders: null,
   name: '',
-  request: false
+  request: false,
+  error: undefined
 };
 
 // Async thunk to post an order
@@ -40,22 +41,26 @@ export const orderSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(postOrder.pending, (state) => {
-        state.error = null;
+        state.orders = initialState.orders;
+        state.name = initialState.name;
         state.request = true;
-      })
-      .addCase(postOrder.rejected, (state, action) => {
-        state.error = action.error.message as string;
-        state.request = false;
+        state.error = initialState.error;
       })
       .addCase(
         postOrder.fulfilled,
         (state, action: PayloadAction<{ name: string; order: TOrder }>) => {
-          state.error = null;
-          state.request = false;
-          state.name = action.payload.name;
           state.orders = action.payload.order;
+          state.name = action.payload.name;
+          state.request = false;
+          state.error = initialState.error;
         }
-      );
+      )
+      .addCase(postOrder.rejected, (state, action) => {
+        state.orders = initialState.orders;
+        state.name = initialState.name;
+        state.request = initialState.request;
+        state.error = action.error.message;
+      });
   }
 });
 
